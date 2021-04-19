@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SVG tranform-origin attribute usage examples</title>
+    <style>
+      h1 {
+        font-family: sans-serif;
+      }
+
+      figure {
+        border: thin #c0c0c0 solid;
+        display: inline-flex;
+        flex-flow: column;
+        padding: 5px;
+        max-width: 200px;
+        margin: auto;
+      }
+
+      figcaption {
+        margin-top: 5px;
+        background-color: #222;
+        color: #fff;
+        font: smaller sans-serif;
+        padding: 3px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>1. Reference image</h1>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="100" stroke="none" fill="black"/>
+        <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+        <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+        
+        <circle cx="100" cy="100" r="75" stroke="none" fill="blue"/>
+        <line x1="100" y1="25" x2="100" y2="175" stroke="rebeccapurple" stroke-width="1.5"/>
+        <line x1="25" y1="100" x2="175" y2="100" stroke="rebeccapurple" stroke-width="1.5"/>
+        
+        <circle cx="100" cy="100" r="50" stroke="none" fill="red"/>
+        <line x1="100" y1="50" x2="100" y2="150" stroke="rebeccapurple" stroke-width="1"/>
+        <line x1="50" y1="100" x2="150" y2="100" stroke="rebeccapurple" stroke-width="1"/>
+      
+        <circle cx="100" cy="100" r="25" stroke="none" fill="yellow"/>
+        <line x1="100" y1="75" x2="100" y2="125" stroke="rebeccapurple" stroke-width="0.5"/>
+        <line x1="75" y1="100" x2="125" y2="100" stroke="rebeccapurple" stroke-width="0.5"/>
+      </svg>
+      <figcaption>Figure 1. Reference image, <code>transform</code> is not used. All other images should look the same.</figcaption>
+    </figure>
+
+    <h1>2. <code>transform</code> attribute applied to <code>&lt;g&gt;</code> element</h1>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-1">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-1" fill="black"/>
+        <use href="#target-g-1" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="0" y="0" width="200" height="200" viewBox="0 0 200 200">
+          <use href="#target-g-1" fill="red" transform="scale(0.5 0.5)" transform-origin="100 100"/>
+          <use href="#target-g-1" fill="yellow" transform="scale(0.25 0.25)" transform-origin="100 100"/>
+        </svg>
+      </svg>
+
+      <figcaption>Figure 2-1. Nested <code>&lt;svg&gt;</code> has the same size as the outermost <code>&lt;svg&gt;</code>.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-2">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-2" fill="black"/>
+        <use href="#target-g-2" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-g-2" fill="red" transform="scale(0.5 0.5)" transform-origin="100 0"/>
+          <use href="#target-g-2" fill="yellow" transform="scale(0.25 0.25)" transform-origin="100 33.3333"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 2-2. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-3">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-3" fill="black"/>
+        <use href="#target-g-3" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-g-3" fill="red" transform="scale(0.5 0.5)" transform-origin="0 0"/>
+          <use href="#target-g-3" fill="yellow" transform="scale(0.25 0.25)" transform-origin="33.3333 33.3333"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 2-3. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.</figcaption>
+    </figure>
+
+    <h1>3. <code>transform</code> CSS property applied to <code>&lt;g&gt;</code> element</h1>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-css-1">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-css-1" fill="black"/>
+        <use href="#target-g-css-1" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="0" y="0" width="200" height="200" viewBox="0 0 200 200">
+          <use href="#target-g-css-1" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="100 100"/>
+          <use href="#target-g-css-1" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="100 100"/>
+        </svg>
+      </svg>
+
+      <figcaption>Figure 3-1. Nested <code>&lt;svg&gt;</code> has the same size as the outermost <code>&lt;svg&gt;</code>.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-css-2">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-css-2" fill="black"/>
+        <use href="#target-g-css-2" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-g-css-2" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="100 0"/>
+          <use href="#target-g-css-2" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="100 33.3333"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 3-2. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <g id="target-g-css-3">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </g>
+        </defs>
+        
+        <use href="#target-g-css-3" fill="black"/>
+        <use href="#target-g-css-3" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-g-css-3" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="0 0"/>
+          <use href="#target-g-css-3" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="33.3333 33.3333"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 3-3. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.</figcaption>
+    </figure>
+
+    <h1>4. <code>transform</code> attribute applied to <code>&lt;svg&gt;</code> element</h1>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-1" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-1" fill="black"/>
+        <use href="#target-svg-1" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="0" y="0" width="200" height="200" viewBox="0 0 200 200">
+          <use href="#target-svg-1" x="0" y="0" fill="red" transform="scale(0.5 0.5)" transform-origin="100 100"/>
+          <use href="#target-svg-1" x="0" y="0" fill="yellow" transform="scale(0.25 0.25)" transform-origin="100 100"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 4-1. Nested <code>&lt;svg&gt;</code> has the same size as the outermost <code>&lt;svg&gt;</code>.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-2a" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-2a" x="0" y="0" fill="black"/>
+        <use href="#target-svg-2a" x="0" y="0" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-svg-2a" x="0" y="-50" fill="red" transform="scale(0.5 0.5)" transform-origin="100 50"/>
+          <use href="#target-svg-2a" x="0" y="-50" fill="yellow" transform="scale(0.25 0.25)" transform-origin="100 50"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 4-2a. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.
+        Transformed <code>&lt;svg&gt;</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-2b" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-2b" x="0" y="0" fill="black"/>
+        <use href="#target-svg-2b" x="0" y="0" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-svg-2b" x="0" y="0" fill="red" transform="scale(0.5 0.5)" transform-origin="100 0"/>
+          <use href="#target-svg-2b" x="0" y="0" fill="yellow" transform="scale(0.25 0.25)" transform-origin="100 33.333333"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 4-2b. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.
+        <code>transform-origin</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-3a" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-3a" fill="black"/>
+        <use href="#target-svg-3a" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-svg-3a" x="-50" y="-50" fill="red" transform="scale(0.5 0.5)" transform-origin="50 50"/>
+          <use href="#target-svg-3a" x="-50" y="-50" fill="yellow" transform="scale(0.25 0.25)" transform-origin="50 50"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 4-3a. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.
+        Transformed <code>&lt;svg&gt;</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-3b" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-3b" fill="black"/>
+        <use href="#target-svg-3b" fill="blue" transform="scale(0.75 0.75)" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-svg-3b" x="0" y="0" fill="red" transform="scale(0.5 0.5)" transform-origin="0 0"/>
+          <use href="#target-svg-3b" x="0" y="0" fill="yellow" transform="scale(0.25 0.25)" transform-origin="33.333333 33.333333"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 4-3b. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.
+        <code>transform-origin</code> is shifted.
+      </figcaption>
+    </figure>
+
+
+    <h1>5. <code>transform</code> CSS property applied to <code>&lt;svg&gt;</code> element</h1>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-css-1" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-css-1" fill="black"/>
+        <use href="#target-svg-css-1" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="0" y="0" width="200" height="200" viewBox="0 0 200 200">
+          <use href="#target-svg-css-1" x="0" y="0" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="100 100"/>
+          <use href="#target-svg-css-1" x="0" y="0" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="100 100"/>
+        </svg>
+      </svg>
+      <figcaption>Figure 5-1. Nested <code>&lt;svg&gt;</code> has the same size as the outermost <code>&lt;svg&gt;</code>.</figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-css-2a" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-css-2a" x="0" y="0" fill="black"/>
+        <use href="#target-svg-css-2a" x="0" y="0" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-svg-css-2a" x="0" y="-50" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="100 50"/>
+          <use href="#target-svg-css-2a" x="0" y="-50" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="100 50"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 5-2a. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.
+        Transformed <code>&lt;svg&gt;</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-css-2b" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-css-2b" x="0" y="0" fill="black"/>
+        <use href="#target-svg-css-2b" x="0" y="0" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="0" y="50" width="200" height="100" viewBox="0 0 200 100">
+          <use href="#target-svg-css-2b" x="0" y="0" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="100 0"/>
+          <use href="#target-svg-css-2b" x="0" y="0" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="100 33.333333"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 5-2b. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along single axis.
+        <code>transform-origin</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-css-3a" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-css-3a" fill="black"/>
+        <use href="#target-svg-css-3a" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-svg-css-3a" x="-50" y="-50" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="50 50"/>
+          <use href="#target-svg-css-3a" x="-50" y="-50" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="50 50"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 5-3a. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.
+        Transformed <code>&lt;svg&gt;</code> is shifted.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <svg id="target-svg-css-3b" width="200" height="200" viewBox="0 0 200 200" preserveAspectRatio="none">
+            <circle cx="100" cy="100" r="100" stroke="none"/>
+            <line x1="100" y1="0" x2="100" y2="200" stroke="rebeccapurple" stroke-width="2"/>
+            <line x1="0" y1="100" x2="200" y2="100" stroke="rebeccapurple" stroke-width="2"/>
+          </svg>
+        </defs>
+        
+        <use href="#target-svg-css-3b" fill="black"/>
+        <use href="#target-svg-css-3b" fill="blue" style="transform: scale(0.75, 0.75);" transform-origin="100 100"/>
+        
+        <svg x="50" y="50" width="100" height="100" viewBox="0 0 100 100">
+          <use href="#target-svg-css-3b" x="0" y="0" fill="red" style="transform: scale(0.5, 0.5);" transform-origin="0 0"/>
+          <use href="#target-svg-css-3b" x="0" y="0" fill="yellow" style="transform: scale(0.25, 0.25);" transform-origin="33.333333 33.333333"/>
+        </svg>
+      </svg>
+      <figcaption>
+        Figure 5-3b. Nested <code>&lt;svg&gt;</code> is centered in the outermost <code>&lt;svg&gt;</code> along both axes.
+        <code>transform-origin</code> is shifted.
+      </figcaption>
+    </figure>
+
+  </body>
+</html>
